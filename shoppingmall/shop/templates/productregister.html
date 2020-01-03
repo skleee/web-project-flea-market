@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'semanticui/semantic.min.css' %}">
+<form class="ui form"  method="POST" enctype="multipart/form-data" action="{% url 'productregister' %}">{% csrf_token %}
+    <h4 class="ui dividing header">Product Register</h4>
+    <div class="two fields">
+        <div class="required field">
+            <label>Product Name</label>
+            <input type="text" name="productName" placeholder="Product Name" required>
+        </div>
+        <div class="required field">
+            <label>Product Price</label>
+            <input type="number" name="productPrice" placeholder="Product Price" required>
+        </div>
+    </div>
+    <div class="two fields">
+        <div class="required field">
+            <label>Stock</label>
+            <input type="number" name="productStock" placeholder="Stock" required>
+        </div>
+        <div class="required field">
+            <label>Trading Place</label>
+            <input type="text" name="tradingPlace" placeholder="Trading Place" required>
+        </div>
+    </div>
+    <div class="required field">
+        <label>Market Type</label>
+        <select name = "dropdown" class="ui fluid dropdown" required>
+            <option value="">Select the market type</option>
+            <option value="FL">Flea Market</option>
+            <option value="AC">Auction</option>
+        </select>
+    </div>
+    <div class="required field">
+        <label>Category</label>
+        <input type="text" name="category" placeholder="Product Category" required>
+    </div>
+    <div class="field">
+        <label>Auction Due</label>
+        <input type="date" name="endtime" placeholder="Set the due of your auction"> 
+    </div>
+    <div class="required field">
+        <label>Product Image</label>
+        <input type="file" name="photo" class="btn btn-secondary btn-lg" value="Photo Upload"  id="imglnp" required>
+    </div>
+    <button type="submit" id="registration" class="ui button btn btn-secondary btn-lg" value="Registration" href="{% url 'productregister' %}">Registration</button>
+    </form>
+<div id="imgArea" style="float:left; margin-left: 100px; margin-top: 50px;">
+    <img id="preview" width="300px" height="300px" src="" alt="">
+</div>
+
+
+<script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script>
+$(document).ready(function(){
+    function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#preview').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#imglnp").change(function() {
+            readURL(this);
+        });
+})
+
+</script>
+
+{% endblock %}

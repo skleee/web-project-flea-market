@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<br>
+
+<link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
+<script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+<script src="semantic/dist/semantic.min.js"></script>
+<style>
+    th, td {border-bottom: 1px solid #ddd;}   
+    tr:hover {background-color: #f5f5f5;}
+</style>
+<div class="container">
+    <h1 style="color: #0056b3;font-family: 'Lobster','Sloway', serif;"><b>{{user.username}}</b>'s Shoppinglist</h1>
+    <!--shopping list  가격 계산. 총 얼마 썼는지도 추가해야하-->
+  
+
+    <table class="ui very basic celled table">
+        <thead style="text-align: center; background-color: #1678C2;">
+          <tr><th style="text-align: center; color:white; padding:4px;">Product</th>
+          <th style="text-align: center; color:white; padding:4px;">Market Type</th>
+          <th style="text-align: center; color:white; padding:4px;">Status</th>
+          <th style="text-align: center; color:white; padding:4px;">Price</th>
+        </tr></thead>
+        <tbody style="text-align: center; vertical-align: middle; padding:5px;">
+  
+        {% for item in product %}
+          <tr>
+            <td style="vertical-align:middle;">
+                <img id="" src="{{ item.pid.pimg.url }}" alt="" width="70px">
+                <div class="content">
+                  {{item.pid.pname}}
+                  <div class="sub header">
+                </div>
+              </div>
+ 
+          </td>
+          <td style="vertical-align:middle;">
+              {{item.pid.get_type_display}}
+          </td>
+          <td style="vertical-align:middle;">
+              {{item.pid.get_status_display}}
+          </td>
+            <td style="vertical-align:middle;">
+              ${{item.pid.price}}
+            </td>
+          </tr>
+          {% endfor %}
+          <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>Total : ${{sumprice}}</th>
+  
+          </tr>
+        </tbody>
+      </table>
+</div>
+
+
+
+<script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+  <script src="{% static 'semanticui/semantic.min.css' %}"></script>
+
+
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'semanticui/semantic.min.css' %}">
+<style> 
+th, td {border-bottom: 1px solid #ddd;}   
+tr:hover {background-color: #f5f5f5;}
+</style>
+<br>
+
+<div class="ui container">
+    <h1 style="color: #0056b3;font-family: 'Lobster','Sloway', serif;"><b>{{user.username}}</b>'s Wishlist</h1>
+    <table class="ui very basic celled table">
+        <thead style="text-align: center; background-color: #1678C2;">
+          <tr><th style="text-align: center; color:white; padding:4px;">Product</th>
+          <th style="text-align: center; color:white; padding:4px;">Seller</th>
+          <th style="text-align: center; color:white; padding:4px;">Price</th>
+        </tr></thead>
+        <tbody>
+        {% for item in wishlist %}
+          <tr>
+            <td style="text-align: center; vertical-align:middle;">
+              <h4 class="ui image header">
+                  <img id="" src="{{ item.pid.pimg.url }}" alt="" width="70px">
+                <div class="content">
+                  
+                  <a font-size="1rem" href="{% url 'detail' item.pid.pid %}">{{item.pid}}</a>
+                </div>
+              </div>
+            </h4>
+          </td>
+          <td style="text-align: center; vertical-align:middle;"> 
+            {{item.pid.sellid}}
+          </td>
+            <td style="text-align: center; vertical-align:middle;">
+              ${{item.pid.price}}
+            </td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+      </table>
+</div>
+<script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+  <script src="{% static 'semanticui/semantic.min.css' %}"></script>
+{% endblock %}

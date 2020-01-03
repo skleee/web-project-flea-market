@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+{% if error %}
+{{error}}
+<br><br>
+{% endif %}
+
+<form method="POST" action="{% url 'buyersignup' %}" class="col-md-9 col-lg-8 mx-auto">
+{% csrf_token %}
+    <h3 class="login-heading mb-4">Buyer Sign up!</h3>
+    <form>
+    <div class="form-label-group">
+        <label for="username">ID</label>
+        <input type="text" name="username" class="form-control" placeholder="ID" required autofocus>
+    </div>
+    <br>
+    <div class="form-label-group">
+        <label for="password1">Password</label>
+        <input type="password" name="password1" class="form-control" placeholder="Password" required>
+    </div>
+    <br>
+    <div class="form-label-group">
+        <label for="password2">Confirm password</label>
+        <input type="password" name="password2" class="form-control" placeholder="Password check" required>
+    </div>
+    <br>
+    <div class="form-label-group">
+        <label for="address">Address</label>
+        <input type="text" name="address" class="form-control" placeholder="address" required>
+    </div>
+    <br>
+    <input type="submit" class="ui button btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" value="Sign up!">
+</form>
+{% endblock %}

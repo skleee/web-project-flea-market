@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="home.css">
+<link rel="stylesheet" href="{% static 'css/card.css' %}">
+    <div class="row" style="display:grid; grid-template-columns:1fr 4fr;" > 
+        <div class="col s1" style="grid-column: 1 / 2; grid-row:1;">
+            <div id="row1">
+                <div id="search" class="card my-3" style="height: 50;"> 
+                    <h5 class="card-header">Search</h5>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <form class="form-inline my-2 my-lg-0" action="{% url 'search' %}">
+                            <input class="form-control mr-sm-2" id="searchwind" name='searching' placeholder="Enter the product or the seller" required>
+                            <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" style="margin-bottom: 6px !important;">Search</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <br> 
+                <div id="nav">
+                    <table id="select-cat-brand">
+                        <tr>
+                        <td id="select-cat" onclick="left_list_change(this.id)">Market</td>
+                        <td id="select-status"  style="color:#6c757d99;" onclick="left_list_change(this.id)">Status</td>
+                        <td id="select-price" style="color:#6c757d99;" onclick="left_list_change(this.id)">Price</td>
+                        </tr>
+                    </table>
+                    <div class="list-group" id="list-cat">
+                        <a href="{% url 'filter' f='category' select='AC' %}" class="cat-item list-group-item">Auction</a>
+                        <a href="{% url 'filter' f='category' select='FL' %}" class="cat-item list-group-item">Flea Market</a>          
+                    </div>
+                    <div class="list-group" id="list-brand" style="display:none">
+                        <a href="{% url 'filter' f='status' select='AUC' %}" class="brand-item list-group-item">Auction</a>
+                        <a href="{% url 'filter' f='status' select='PUR' %}" class="brand-item list-group-item">Purchased</a>
+                        <a href="{% url 'filter' f='status' select='ING' %}" class="brand-item list-group-item">In Progress</a>
+                    </div>
+                    <div class="list-group" id="list-price" style="display:none">
+                        <a href="{% url 'filter' f='price' select='10000' %}" class="price-item list-group-item">~ 10$</a>
+                        <a href="{% url 'filter' f='price' select='50000' %}" class="price-item list-group-item">10$ ~ 50$</a>
+                        <a href="{% url 'filter' f='price' select='100000' %}" class="price-item list-group-item">50$ ~ 100$</a>
+                        <a href="{% url 'filter' f='price' select='over' %}" class="price-item list-group-item">100$ ~</a>
+                    </div>
+                </div>
+                <br> 
+                <div id="align method" >
+                    <label for="sort-select" class="col-sm-1 col-form-label col-form-label-sm" style="font-size: 1rem;">Align</label>
+                    <select id="sort-select" onchange="location=this.value;" class="col-sm-12 form-control form-control-sm" style="width: 350px; font-size: 1.2rem">
+                        <option>choose an alignment sequence</option>
+                        <option class="sort-new" value="?sort=new">new product</option>
+                        <option class="sort-cheap" value="?sort=cheap">low price</option>
+                        <option class="sort-expen" value="?sort=expen">high price</option>
+                    </select>
+                </div>
+                        
+                </div>
+        </div>
+        <div class="col s1" style="margin:13px; display:grid; grid-gap: 10px;grid-template-columns:1fr 1fr 1fr; grid-template-rows: auto;">
+            {% for ppp in products.all %}
+                <div class="column"style="margin-top:7px; margin-bottom:7px;">
+                    <div class="ui link fluid cards">          
+                        <div class="card">
+                            <div class="ui fluid image">
+                                {% if ppp.status == 'PUR' %}
+                                <div class="ui right black ribbon label">
+                                    <i class="tag icon"></i> Purchased
+                                </div>
+                                {% elif ppp.status == 'AUC' %}
+                                <div class="ui right teal ribbon label">
+                                    <i class="dollar sign icon"></i> Auction
+                                </div>
+                                {% else %}
+                                <div class="ui right red ribbon label">
+                                    <i class="cart icon"></i> In progress
+                                </div>
+                                {% endif %}
+                                {% if ppp.pimg %}
+                                <img src="{{ ppp.pimg.url }}" style="height:200px;">
+                                {% endif %}
+                            </div>
+                            <div class="content">
+                                <div class="header"><a href="{% url 'detail' ppp.pid %}">{{ppp.pname}}</a></div>
+                                <div class="meta">
+                                    <a>${{ppp.price}}</a>
+                                </div>
+                                <div class="description">
+                                    <strong>{{ppp.category}}</strong><br>
+                                  {% if ppp.type == "FL" %} 
+                                    Stock: {{ppp.stock}}개<br> 
+                                  {% else %}
+                                    Auction end time: {{ppp.endtime}}
+                                  {% endif %}
+                                  Registration date {{ppp.pub_date}}<br>
+                                  Current Status: {{ppp.get_status_display}}<br>
+                                </div>
+                            </div>
+                            <div class="extra content">
+                                <span class="right floated">
+                                    In {{ppp.get_type_display}}
+                                </span>
+                                <span>
+                                    <i class="user icon"></i>
+                                    Seller: {{ppp.sellid}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+      
+            </div>
+        </div>
+{% endblock %}       
+
+   

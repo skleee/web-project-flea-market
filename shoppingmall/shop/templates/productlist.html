@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<br>
+<link rel="stylesheet" type="text/css" href="{% static 'semanticui/semantic.min.css' %}">
+<style>
+    #productimage{ display: inline-block;}  
+    th, td {border-bottom: 1px solid #ddd;}   
+    tr:hover {background-color: #f5f5f5;}
+</style>
+<div class="ui container">
+    <h1 style="color: #0056b3;font-family: 'Lobster','Sloway', serif;">Product list for seller</h1>
+   
+   
+    <h3> User ID: {{user.username}}</h3>
+
+    <!-- Number of people who wants to buy(wish list), history of auction -->
+    {% if not products %}
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="pdf file outline icon"></i>
+                No products are listed
+            </div>
+            <div class="ui primary button"><a href="{% url 'productregister' %}" style="color:white">Register Your Product</a></div>
+        </div>
+    {% else %}
+        <table class="ui very basic celled table">
+        <thead style="text-align: center; background-color: #1678C2;"> 
+          <tr><th style="text-align: center; color:white; padding:4px;"><h3>Product</h3></th>
+          <th style="text-align: center; color:white; padding:4px;"><h3>Current Price</h3></th>
+          <th style="text-align: center; color:white; padding:4px;"><h3>Status</h3></th>
+          <th style="text-align: center; color:white; padding:4px;"><h3>Market Type</h3></th>
+          <th style="text-align: center; color:white; padding:4px;"><h3>Management</h3></th>
+        </tr style="height:10px;"></thead>
+        <tbody style="text-align: center; vertical-align: middle; padding:5px;">
+        {% for product in products %}
+          <tr>
+            <td>
+            <div id="productimage" float="left">
+                <img id="productimage first" src="{{ product.pimg.url }}" alt="" width="70px">
+                <div id="productimage second" class="content">
+                    <h4>{{product.pname}}</h4>
+                    <div class="sub header">
+                    </div>
+                </div>
+            </div>
+            </td>
+            <td style="padding:30px;">
+                ${{product.price}}
+            </td>
+            <td style="padding:30px;">
+                {{product.get_status_display}}
+            </td>
+            <td style="padding:30px;">
+                {{product.get_type_display}}
+                <br>
+                {% if product.type == "AC" %}
+                    {% if product.status != "PUR" %}
+                    End time: {{product.endtime}}
+                    {%endif%}
+                {% endif %}
+            </td>
+            <td style="padding:30px;">
+                <a href="{% url 'delete' product.pid %}"><i class="large trash icon"></i></a> 
+                <a href="{% url 'history' product.pid %}"><i class="large search plus icon"></i></a> 
+                <br><br>
+                {% if product.type == 'AC' %}
+                    {% if  product.status != 'PUR' %}
+                    <div class="ui animated button" tabindex="0">
+                        <div class="visible content">End the auction</div>
+                        <a href="{% url 'endauction' product.pid %}" style="color: white;">
+                            <div class="hidden content">
+                                <i class="right arrow icon"></i>
+                            </div>
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="ui button">AUCTION ENDED</div> 
+                    {% endif %}
+                {%endif%}     
+            </td>
+          {% endfor %}
+        </tbody>
+      </table>
+      <br>
+      <div class="ui primary button"><a href="{% url 'productregister' %}" style="color: white;">Register Your Product</a></div>      
+          
+    {% endif %}
+{{enditems}}
+</div>
+<script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"></script>
+<script src="{% static 'semanticui/semantic.min.css' %}"></script>
+{% endblock %}

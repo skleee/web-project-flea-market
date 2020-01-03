@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+{% load static %}
+<style>
+ #title{
+
+ }
+
+</style>
+{% if not user.is_authenticated %}
+
+<form method="POST" action="{% url 'login' %}" class="col-md-9 col-lg-8 mx-auto">
+  
+    {% csrf_token %}
+   
+    <div id="title"> 
+        <h3>Login</h3>
+        <br>
+    </div>
+    <form>
+    <div class="form-label-group">
+        <label for="username">ID</label>
+        <input type="text" name="username" class="form-control" placeholder="ID" required autofocus>
+    </div>
+    <br>
+    <div class="form-label-group">
+        <label for="password">Password</label>
+        <input type="password" name="password" class="form-control" placeholder="Password" required>
+    </div>       
+    <br>
+    <input type="submit" class="ui button btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" value="Sign in!">
+</form>
+
+{% endif %}
+{% endblock %}

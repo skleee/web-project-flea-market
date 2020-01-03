@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/card.css' %}">
+
+<br>
+<h1 style="color: #0056b3;font-family: 'Lobster','Sloway', serif;">My page</h1>
+<div style="padding:10px; width: 70rem; margin: 0 auto;">
+        
+    <div class="container">
+                
+                <div>
+                        <table class="table">
+                                <thead></thead>
+                                <tbody>
+                                  <tr>
+                                    <td><h4>User ID</h4></td>
+                                    <td>{{user.username}}</td>
+                                  </tr>
+                                  {% if user.buyer.is_buyer %}
+                                  <tr>
+                                    <td><h4>User type</h4></td>
+                                    <td>Buyer</td>
+                                  </tr>
+                                  <tr>
+                                    <td><h4>Address</h4></td>
+                                    <td>{{user.buyer.address}}</td>
+                                  </tr>
+                                  <tr>
+                                    <td><h4>Shopping history</h4></td>
+                                    <td>{% for x in user.buyer.pids.all %}
+                                            {{x.pname}} {{x.price}}/
+                                        {% endfor %}</td>
+                                  </tr>
+                                  <tr>
+                                    <td><h4>Auction history</h4></td>
+                                    <td>{% for bid in bids.all %}
+                                            {{bid.pid}} at {{bid.price}} in {{bid.bidtime}}, Seller is "{{bid.pid.sellid}}"/
+                                        {%endfor%}</td>
+                                  </tr>
+                                  {% elif user.seller.is_seller %}
+                                  <tr>
+                                        <td><h4>User type</h4></td>
+                                        <td>Seller</td>
+                                  </tr>
+                                  {% endif %}
+                
+                             
+                                 
+                            
+                                
+                                 <tr><td></td><td></td></tr>
+                
+                                 <br>
+                                </tbody>
+                            </table>
+
+
+
+                </div>
+            
+            </div>
+</div>
+
+
+
+{% endblock %}

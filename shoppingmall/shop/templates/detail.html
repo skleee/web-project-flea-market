@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
+
+<div id="card">
+    <div id="imgArea">
+            <img width="500px" height="500px" src="{{ product.pimg.url }}" alt="">
+    </div>
+
+    <div id="detail">
+            <h1 class="card-title">{{product.pname}}</h1>
+            <h4>{% if product.type == 'AC' %} Current{%endif%} Price: ${{product.price}}</h4>
+            <h4>Category: {{product.category}}</h4>
+            <table class="table">
+                <thead></thead>
+                <tbody>
+                   {% if product.type == "FL" %}
+                  <tr>
+                    <td>Stock remaining</td>
+                    <td>{{product.stock}}</td>
+                  </tr>
+                  {% endif %}
+                  <tr>
+                    <td>Registered date</td>
+                    <td>{{product.pub_date}}</td>
+                  </tr>
+                  <tr>
+                    <td>Trading place</td>
+                    <td>{{product.tradeplace}}</td>
+                  </tr>
+                  <tr>
+                    <td>Seller</td>
+                    <td>{{product.sellid.username}}</td>
+                  </tr>
+                  <tr>
+                    <td>Seller's phone number</td>
+                    <td>{{product.sellid.seller.phone}}</td>
+                  </tr>
+
+            {% if user.is_authenticated %}    
+                 {% if product.type == 'AC'%}
+                 <tr><td>Auction End time</td><td><b>{{product.endtime}}</b></td></tr>
+                 <tr><td></td><td></td></tr>
+                </tbody>
+            </table>
+            <!-- bid 한줄로 오른쪽정렬하기 -->
+            <div class="bidBuy">
+                 <form method="POST" action="{% url 'bid' product.pid %}" id="bidForm" class="form-inline my-2 my-lg-0" style="display: inline-flex; float:right;" !important;>
+                    {% csrf_token %}
+                    <input type="number"  class="form-control" name="bidprice" placeholder="Enter the price" required>
+                    <div style="display:inline-flex; ">                 
+                     <button  type="submit" id="btnBid" class="btn btn-primary btn-lg">BID!</button>
+                     <button  type="button" id="btn2" class="btn btn-secondary btn-lg"><a href="{% url 'addwish' product.pid %}">Add to wish</a></button>
+                    </div>
+                </form>
+                 <br>
+                
+                 {% else %}
+                 <tr><td></td><td></td></tr>
+                </tbody>
+            </table>
+                <div id="fleaMarketBtn" style="display:inline-flex; color:white; border-color:white; float:right;">
+                 <button type="button" id="btn1" class="btn btn-secondary btn-lg" style="color:white; border-color:white;"><a style="color:white;" href="{% url 'buy' product.pid %}">Buy</a></button>
+                 <button type="button" id="btn2" class="btn btn-secondary btn-lg"><a href="{% url 'addwish' product.pid %}">Add to wish</a></button>
+                 {% endif%}
+                 {% else %} 
+                <i>Log in if you want to get in flea market</i>
+                {% endif %} 
+                </div>
+            </div>
+            <!--  -->
+ 
+    </div>
+
+    </div>
+
+</div>
+
+<div class="ui comments container">
+<div class="ui segments">
+    <div class="ui segment">
+        <h3 class="ui header">Product Review</h3>
+    </div>
+    <div class="ui segment">
+        {% for x in reviews %}
+        <div class="comment">
+            <div class="content">
+                <a class="author">{{x.uid}}</a>
+                <div class="metadata">
+                    {% if x.uid.buyer.is_buyer %}
+                        <span class="status"><i>Buyer</i></span>
+                    {% elif x.uid.seller.is_seller %}
+                        <span class="status"><i>Seller</i></span>
+                    {% endif %}
+                    <div class="date">Written on {{x.pubdate}}</div>
+                </div>
+                <div class="text">
+                    {{x.content}}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <form class="ui reply form" method="POST" action="{% url 'review' product.pid %}">{% csrf_token %}
+            <div class="field">
+                <input  class="field" name="content" type="text" required>
+            </div>
+            <button type="submit" class="ui blue labeled submit icon button"> <i class="icon edit"></i> Leave a Review</button>
+        </form>
+    </div>
+</div>
+</div>
+
+<script
+src="https://code.jquery.com/jquery-3.1.1.min.js"
+integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+crossorigin="anonymous"></script>
+<script src="{% static 'semanticui/semantic.min.css' %}"></script>
+
+{% endblock %}

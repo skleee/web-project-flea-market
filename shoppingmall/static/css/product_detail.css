@@ -1,0 +1,21 @@
+#card{
+    background-color: white;
+}
+
+#imgArea{
+    float: left; 
+    
+}
+
+#detail{
+    float: right;
+    margin-left: 10px;
+}
+
+.card-text {
+    color: black;
+    border: 1px solid #545b62;
+}
+
+
+    
